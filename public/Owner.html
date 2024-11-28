@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Owner Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Owner Dashboard</h1>
+      <nav>
+        <ul>
+          <li><a href="user.html">Go to User Page</a></li>
+          <li><a href="#viewBookings">View Bookings</a></li>
+          <li><a href="#viewFeedback">View Feedback</a></li>
+          <li><a href="#generateReports">Generate Reports</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section id="viewBookings">
+        <h2>All Bookings</h2>
+        <table id="bookingsTable">
+          <thead>
+            <tr>
+              <th>Customer Name</th>
+              <th>Service</th>
+              <th>Date</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section id="viewFeedback">
+        <h2>Customer Feedback</h2>
+        <table id="feedbackTable">
+          <thead>
+            <tr>
+              <th>Customer Name</th>
+              <th>Feedback</th>
+              <th>Submitted At</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section id="viewReports">
+        <h2>View Reports</h2>
+        <table id="reportsTable">
+          <thead>
+            <tr>
+              <th>Report Type</th>
+              <th>Content</th>
+              <th>Created At</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section id="generateReports">
+        <h2>Generate Business Report</h2>
+        <form id="generateReportForm">
+          <label for="reportType">Report Type:</label>
+          <select id="reportType" required>
+            <option value="bookings">Bookings Report</option>
+            <option value="feedback">Feedback Report</option>
+          </select>
+          <button type="submit">Generate Report</button>
+        </form>
+        <p id="reportResponse"></p>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2024 Car Wash System</p>
+    </footer>
+
+    <script src="script-owner.js" defer></script>
+  </body>
+</html>

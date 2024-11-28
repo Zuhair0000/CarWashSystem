@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Car Wash Booking</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Car Wash Booking</h1>
+    </header>
+    <main>
+      <section id="booking">
+        <h2>Book a Service</h2>
+        <form id="bookingForm">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required />
+
+          <label for="service">Service:</label>
+          <select id="service" name="service" required></select>
+
+          <label for="date">Date:</label>
+          <input type="date" id="date" name="date" required />
+
+          <label for="time">Time:</label>
+          <input type="time" id="time" name="time" required />
+
+          <button type="submit">Book Now</button>
+        </form>
+        <p id="bookingResponse"></p>
+      </section>
+
+      <section id="feedback">
+        <h2>Submit Feedback</h2>
+        <form id="feedbackForm">
+          <label for="feedbackMessage">Feedback:</label>
+          <textarea
+            id="feedbackMessage"
+            name="feedbackMessage"
+            required
+          ></textarea>
+          <button type="submit">Submit Feedback</button>
+        </form>
+      </section>
+    </main>
+    <footer>
+      <p>&copy; 2024 Car Wash System</p>
+    </footer>
+
+    <script src="script-user.js" defer></script>
+  </body>
+</html>
