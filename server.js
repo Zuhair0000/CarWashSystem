@@ -43,36 +43,54 @@ app.get("/api/services", (req, res) => {
 });
 
 // Route to create a booking
+// Create a new booking
 app.post("/api/bookings", (req, res) => {
-  const { name, service_id, date, time } = req.body; // Extract booking details from request body
+  const { name, service_id, date, time } = req.body;
 
-  // Check if required fields are provided
   if (!name || !service_id || !date || !time) {
     return res.status(400).send("Missing required fields.");
   }
 
-  // SQL query to insert booking data into the Bookings table
-  const sql =
-    "INSERT INTO Bookings (name, service_id, date, time) VALUES (?, ?, ?, ?)";
-  db.query(sql, [name, service_id, date, time], (err) => {
+  // Use round-robin or random assignment for staff
+  const staffQuery = "SELECT id FROM Staff ORDER BY id ASC";
+  db.query(staffQuery, (err, staff) => {
     if (err) {
-      console.error("Error inserting booking:", err);
-      return res.status(500).send("Error creating booking.");
+      console.error("Error fetching staff:", err);
+      return res.status(500).send("Error fetching staff.");
     }
-    res.status(200).send("Booking created successfully.");
+
+    // Assign staff in a round-robin fashion
+    const staffIndex = Math.floor(Math.random() * staff.length); // Change to round-robin if preferred
+    const assignedStaff = staff[staffIndex].id;
+
+    const sql =
+      "INSERT INTO Bookings (name, service_id, date, time, staff_id) VALUES (?, ?, ?, ?, ?)";
+    db.query(sql, [name, service_id, date, time, assignedStaff], (err) => {
+      if (err) {
+        console.error("Error creating booking:", err);
+        return res.status(500).send("Error creating booking.");
+      }
+      res.status(200).send("Booking created successfully.");
+    });
   });
 });
 
 // Route to fetch all bookings (for the owner/admin)
+// Fetch all bookings with staff and service details
+// Fetch all bookings with staff and service details
 app.get("/api/bookings", (req, res) => {
-  const sql =
-    "SELECT b.id, b.name, s.name AS service, b.date, b.time FROM Bookings b JOIN Services s ON b.service_id = s.id";
+  const sql = `
+      SELECT b.id, b.name, s.name AS service, b.date, b.time, st.name AS staff
+      FROM Bookings b
+      LEFT JOIN Services s ON b.service_id = s.id
+      LEFT JOIN Staff st ON b.staff_id = st.id
+  `;
   db.query(sql, (err, results) => {
     if (err) {
       console.error("Error fetching bookings:", err);
       return res.status(500).send("Error fetching bookings.");
     }
-    res.status(200).json(results); // Send the list of bookings as JSON response
+    res.status(200).json(results);
   });
 });
 
@@ -136,6 +154,34 @@ app.get("/api/reports", (req, res) => {
       return res.status(500).send("Error fetching reports.");
     }
     res.status(200).json(results); // Send the reports data as a JSON response
+  });
+});
+
+app.get("/api/staff", (req, res) => {
+  const sql = "SELECT * FROM Staff";
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error fetching staff:", err);
+      return res.status(500).send("Error fetching staff.");
+    }
+    res.status(200).json(results);
+  });
+});
+
+app.post("/api/assign-staff", (req, res) => {
+  const { booking_id, staff_id } = req.body;
+
+  if (!booking_id || !staff_id) {
+    return res.status(400).send("Missing required fields.");
+  }
+
+  const sql = "UPDATE Bookings SET staff_id = ? WHERE id = ?";
+  db.query(sql, [staff_id, booking_id], (err) => {
+    if (err) {
+      console.error("Error assigning staff:", err);
+      return res.status(500).send("Error assigning staff.");
+    }
+    res.status(200).send("Staff assigned successfully.");
   });
 });
 

@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (bookings.length === 0) {
         const row = bookingsTable.insertRow();
         const cell = row.insertCell(0);
-        cell.colSpan = 4;
+        cell.colSpan = 6; // Adjust to match the number of columns in the table
         cell.textContent = "No bookings available.";
         return;
       }
@@ -59,10 +59,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Populate the bookings table with the fetched booking data
       bookings.forEach((booking) => {
         const row = bookingsTable.insertRow();
-        row.insertCell(0).textContent = booking.name; // Customer name
-        row.insertCell(1).textContent = booking.service; // Service type
-        row.insertCell(2).textContent = booking.date; // Appointment date
-        row.insertCell(3).textContent = booking.time; // Appointment time
+        row.insertCell(0).textContent = booking.id; // Booking ID
+        row.insertCell(1).textContent = booking.name; // Customer name
+        row.insertCell(2).textContent = booking.service; // Service type
+        row.insertCell(3).textContent = booking.date; // Appointment date
+        row.insertCell(4).textContent = booking.time; // Appointment time
+        row.insertCell(5).textContent = booking.staff || "Unassigned"; // Assigned Staff
       });
     } catch (error) {
       console.error("Error fetching bookings:", error);
